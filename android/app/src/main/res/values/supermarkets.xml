@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="supermarket">
+        <item>Nofrills</item>
+        <item>Costco</item>
+        <item>Sunny</item>
+        <item>Bestco</item>
+        <item>Centra</item>
+        <item>Dollarama</item>
+        <item>Dollar Tree</item>
+        <item>大统华</item>
+        <item>Metro</item>
+        <item>Other</item>
+</string-array></resources>
