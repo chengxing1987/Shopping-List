@@ -32,9 +32,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private TableLayout resultTable;
-    private final String ACCESS_TOKEN = getResources().getString(R.string.access_token);
-    private final String FILE_NAME = getResources().getString(R.string.file_name);
-    private final String FILE_PATH = getApplicationContext().getFilesDir().getAbsolutePath();
+    private String fileName;
+    private String filePath;
     private DropBoxUtils dropBoxUtils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,10 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        dropBoxUtils = new DropBoxUtils(ACCESS_TOKEN, FILE_NAME, FILE_PATH);
+        String ACCESS_TOKEN = getResources().getString(R.string.access_token);
+        filePath = getApplicationContext().getFilesDir().getAbsolutePath();
+        fileName = getResources().getString(R.string.file_name);
+        dropBoxUtils = new DropBoxUtils(ACCESS_TOKEN, fileName, filePath);
         resultTable = (TableLayout) this.findViewById(R.id.resultTable);
         addData();
     }
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         resultTable.removeAllViewsInLayout();
         String[] titles = {"名称", "超市", "备注", "时间", "操作"};
         addLine(titles, true);
-        try (FileReader fr = new FileReader(FILE_PATH + "/" + FILE_NAME);
+        try (FileReader fr = new FileReader(filePath + "/" + fileName);
              BufferedReader bf = new BufferedReader(fr)){
             String str;
             while ((str = bf.readLine()) != null) {
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void writeNewItemToLocalFile(String text){
-        File file = new File(FILE_PATH + "/" + FILE_NAME);
+        File file = new File(filePath + "/" + fileName);
         try (FileWriter fw = new FileWriter(file,true);
              BufferedWriter writer = new BufferedWriter(fw)){
             writer.write(text);
@@ -149,6 +151,11 @@ public class MainActivity extends AppCompatActivity {
         }else if(name.contains(",") || name.contains(";")){
             Toast.makeText(MainActivity.this,
                     "物品中不能包含‘,’和‘;’符号，请重新输入",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if(comment.contains(",") || comment.contains(";")){
+            Toast.makeText(MainActivity.this,
+                    "备注中不能包含‘,’和‘;’符号，请重新输入",
                     Toast.LENGTH_LONG).show();
         }else {
             addItemOperation(System.currentTimeMillis() + "," + name + "," + shop + ","
@@ -213,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void deleteCorrespondingItems(List<String> idList) {
         List<String> itemsLeftLines = new ArrayList<String>();
-        try (FileReader fr = new FileReader(FILE_PATH + "/" + FILE_NAME);
+        try (FileReader fr = new FileReader(filePath + "/" + fileName);
              BufferedReader bf = new BufferedReader(fr);){
             String str;
             while ((str = bf.readLine()) != null) {
@@ -227,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
 
-        File file = new File(FILE_PATH + "/" + FILE_NAME);
+        File file = new File(filePath + "/" + fileName);
         try (FileWriter fw = new FileWriter(file,false);
              BufferedWriter writer = new BufferedWriter(fw)){
             if (!file.exists()) {
@@ -248,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<String> getIdForDelete(List<Integer> deleteListFinal) {
         List<String> idList = new ArrayList<String>();
-        try (FileReader fr = new FileReader(FILE_PATH + "/" + FILE_NAME);
+        try (FileReader fr = new FileReader(filePath + "/" + fileName);
              BufferedReader bf = new BufferedReader(fr)){
             String str;
             int counter = 1;
