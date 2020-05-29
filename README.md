@@ -8,3 +8,5 @@ The initial version is so simple that it only contains an Android client and a d
 I am using a .txt file because my family members who do not know markup language can also understand and edit the texts.
 
 The current version is unable to deal with synchronization issues as I believe the current design is unable to handle concurrent operations.
+
+[Update]The new version added three fragments independently for shopping list, purchased items and adding new items.
