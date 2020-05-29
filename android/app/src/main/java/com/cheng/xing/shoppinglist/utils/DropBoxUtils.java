@@ -18,19 +18,29 @@ import java.io.InputStream;
 public class DropBoxUtils {
     private String access_token;
     private String file_name;
-    private String file_path;
+    private String purchased_file_name;
+    private String shop_file_name;
+    private String filePath;
     private DbxClientV2 client;
 
-    public DropBoxUtils(String access_token, String file_name, String file_path){
+    public DropBoxUtils(String filePath, String access_token, String[] fileNames){
         this.access_token = access_token;
-        this.file_name = file_name;
-        this.file_path = file_path;
+        this.filePath = filePath;
+        if(fileNames.length >= 1){
+            this.file_name = fileNames[0];
+        }
+        if(fileNames.length >= 2){
+            this.purchased_file_name = fileNames[1];
+        }
+        if(fileNames.length >= 3){
+            this.shop_file_name = fileNames[2];
+        }
         client = new DbxClientV2(DbxRequestConfig.newBuilder("shopping-list").build(),
                 access_token);
     }
     public void downloadLatestFile() {
         try (FileOutputStream out = new FileOutputStream(
-                file_path + "/" + file_name)){
+                filePath + "/" + file_name)){
             DbxDownloader<FileMetadata> downloader = client.files().download("/" + file_name);
             downloader.download(out);
         } catch (DbxException | IOException ex) {
@@ -39,8 +49,27 @@ public class DropBoxUtils {
     }
 
     public void uploadToDropBox() {
-        try (InputStream in = new FileInputStream(file_path + "/" + file_name)) {
+        try (InputStream in = new FileInputStream(filePath + "/" + file_name)) {
             FileMetadata metadata = client.files().uploadBuilder("/" + file_name).withMode(WriteMode.OVERWRITE)
+                    .uploadAndFinish(in);
+        } catch (IOException | DbxException e) {
+            // To do
+        }
+    }
+
+    public void downloadLatestPurchasedFile() {
+        try (FileOutputStream out = new FileOutputStream(
+                filePath + "/" + purchased_file_name)){
+            DbxDownloader<FileMetadata> downloader = client.files().download("/" + purchased_file_name);
+            downloader.download(out);
+        } catch (DbxException | IOException ex) {
+            //To do
+        }
+    }
+
+    public void uploadPurchasedToDropBox() {
+        try (InputStream in = new FileInputStream(filePath + "/" + purchased_file_name)) {
+            FileMetadata metadata = client.files().uploadBuilder("/" + purchased_file_name).withMode(WriteMode.OVERWRITE)
                     .uploadAndFinish(in);
         } catch (IOException | DbxException e) {
             // To do

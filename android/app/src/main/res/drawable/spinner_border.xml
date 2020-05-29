@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- 第一组item：设置边框 -->
+    <item>
+        <shape>
+            <!-- 设置边框线宽度和颜色 -->
+            <stroke
+                android:width="0dp"
+                android:color="#000000" >
+            </stroke>
+            <!-- 设置圆角度数 -->
+            <corners android:radius="5dp" />
+            <!-- 设置背景颜色 -->
+            <solid android:color="#E1DEDE" />
+            <!-- padding：设置边距 -->
+            <padding
+                android:bottom="0dp"
+                android:left="0dp"
+                android:right="0dp"
+                android:top="0dp" >
+            </padding>
+        </shape>
+    </item>
+</layer-list>

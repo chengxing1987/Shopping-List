@@ -2,5 +2,10 @@
     <string name="app_name">购物清单</string>
     <string name="app_title">购物清单</string>
     <string name="access_token"></string>
-    <string name="file_name">list.txt</string>
+    <string name="file_name">shoppinglist.txt</string>
+    <string name="file_name_purchased">purchased.txt</string>
+    <string name="title_home">主页</string>
+    <string name="title_purchased">已购</string>
+    <string name="title_filter">筛选</string>
+    <string name="title_add">添加</string>
 </resources>
